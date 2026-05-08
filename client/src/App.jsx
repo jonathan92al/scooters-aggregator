@@ -75,7 +75,7 @@ export default function App() {
   return (
     <div className={`app${mapStyleId === "carto-dark" ? " dark" : ""}`}>
       <header className="header">
-        <h1>Tel Aviv Scooters</h1>
+        <h1>🛴 Tel Aviv Scooters</h1>
         {data && (
           <FilterBar
             operators={data.operators}

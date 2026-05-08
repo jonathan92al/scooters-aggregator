@@ -1,6 +1,6 @@
 import { MapContainer, TileLayer, Marker, Popup, Circle, Polygon, Polyline, useMap, useMapEvents } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-cluster";
-import { useEffect, useState, useMemo, useCallback, memo, useRef } from "react";
+import { useEffect, useState, useMemo, useCallback, memo, useRef, startTransition } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -25,7 +25,7 @@ function FlyToUser({ position }) {
   const map = useMap();
   useEffect(() => {
     map.setView(position, DEFAULT_ZOOM);
-  }, []); // only on mount
+  }, [map, position]); // only on mount
   return null;
 }
 
@@ -33,7 +33,7 @@ function FitRoute({ coords }) {
   const map = useMap();
   useEffect(() => {
     if (coords?.length) map.fitBounds(coords, { padding: [60, 60] });
-  }, [coords]);
+  }, [coords, map]);
   return null;
 }
 
@@ -261,7 +261,7 @@ function HeadingCone({ center, heading }) {
   const positions = useMemo(() => {
     if (heading == null) return null;
     const [lat, lng] = center;
-    const radiusM = 80;
+    const radiusM = 20;
     const spreadDeg = 28;
     const steps = 24;
     const latPerM = 1 / 111320;
@@ -559,7 +559,7 @@ export default function ScooterMap({ vehicles, operators, userLocation, mapStyle
   useEffect(() => {
     if (!route) return;
     const d = haversineMeters(userLocation, [route.vehicle.lat, route.vehicle.lon]);
-    if (d <= 20) setRoute(null);
+    if (d <= 20) startTransition(() => setRoute(null));
   }, [userLocation, route]);
 
   return (
