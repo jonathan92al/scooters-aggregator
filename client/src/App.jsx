@@ -6,7 +6,7 @@ import "./App.css";
 
 const REFRESH_INTERVAL_MS = 30_000;
 const DUMMY_LOCATION = [32.086584, 34.779584];
-const API_BASE = import.meta.env.VITE_API_BASE ?? "";
+const API_BASE = (import.meta.env.VITE_API_BASE ?? "").replace(/\/$/, "");
 
 export default function App() {
   const [fetchState, setFetchState] = useState({ data: null, loading: true, error: null });

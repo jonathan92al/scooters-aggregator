@@ -8,7 +8,7 @@ import { faLocationArrow, faMoon } from "@fortawesome/free-solid-svg-icons";
 import { MAP_STYLES } from "../mapStyles";
 
 const DEFAULT_ZOOM = 18;
-const API_BASE = import.meta.env.VITE_API_BASE ?? "";
+const API_BASE = (import.meta.env.VITE_API_BASE ?? "").replace(/\/$/, "");
 
 const USER_ICON = L.divIcon({
   html: `<div style="
