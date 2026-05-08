@@ -42,7 +42,7 @@ function BoundsTracker({ onBoundsChange }) {
     moveend: () => onBoundsChange(map.getBounds()),
     zoomend: () => onBoundsChange(map.getBounds()),
   });
-  useEffect(() => { onBoundsChange(map.getBounds()); }, []);
+  useEffect(() => { onBoundsChange(map.getBounds()); }, [map, onBoundsChange]);
   return null;
 }
 
@@ -251,7 +251,9 @@ function useDeviceHeading() {
     try {
       const result = await DeviceOrientationEvent.requestPermission();
       if (result === "granted") startListening();
-    } catch {}
+    } catch (err) {
+      console.warn("Orientation permission denied:", err);
+    }
   }, [startListening]);
 
   return { heading, requestPermission };
@@ -347,7 +349,7 @@ function trackClick(vehicle, action, distanceMeters) {
   }).catch(() => {});
 }
 
-function RideButton({ vehicle, distanceM, userLocation, onNavigate, style = {} }) {
+function RideButton({ vehicle, distanceM, onNavigate, style = {} }) {
   const isNearby = distanceM !== null && distanceM <= NEARBY_THRESHOLD_M;
   const baseStyle = {
     display: "flex",
@@ -568,6 +570,7 @@ export default function ScooterMap({ vehicles, operators, userLocation, mapStyle
         center={userLocation}
         zoom={DEFAULT_ZOOM}
         minZoom={13}
+        maxZoom={19}
         maxBounds={[[32.02, 34.74], [32.13, 34.84]]}
         maxBoundsViscosity={1.0}
         style={{ height: "100%", width: "100%" }}
@@ -576,6 +579,7 @@ export default function ScooterMap({ vehicles, operators, userLocation, mapStyle
           key={tileStyle.id}
           attribution={tileStyle.attribution}
           url={tileStyle.url}
+          maxZoom={19}
         />
         <FlyToUser position={userLocation} />
         <BoundsTracker onBoundsChange={setBounds} />
@@ -590,11 +594,11 @@ export default function ScooterMap({ vehicles, operators, userLocation, mapStyle
             <FitRoute coords={route.coords} />
           </>
         )}
-        <Circle
+        {(heading == null || window.innerWidth > 480) && <Circle
           center={userLocation}
           radius={15}
           pathOptions={{ color: "#2979ff", fillColor: "#2979ff", fillOpacity: 0.08, weight: 2 }}
-        />
+        />}
         <Marker position={userLocation} icon={USER_ICON}>
           <Popup>You are here</Popup>
         </Marker>
