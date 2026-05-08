@@ -1,0 +1,118 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  --surface: #f8f9fb;
+  --surface-2: rgba(255, 255, 255, 0.97);
+  --border: #e2e5ea;
+  --text-primary: #1a1a2e;
+  --text-secondary: #555;
+  --text-muted: #888;
+}
+
+.app.dark {
+  --surface: #111827;
+  --surface-2: rgba(17, 24, 39, 0.97);
+  --border: rgba(255, 255, 255, 0.1);
+  --text-primary: #e2e6f0;
+  --text-secondary: #a0aabf;
+  --text-muted: #6b7590;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 8px 16px;
+  padding: 10px 16px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  color: var(--text-primary);
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  transition: background 0.3s, border-color 0.3s;
+}
+
+.header h1 {
+  font-size: 18px;
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--text-primary);
+}
+
+.filter-bar {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+  overflow-x: auto;
+  flex-shrink: 1;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.filter-bar::-webkit-scrollbar {
+  display: none;
+}
+
+@media (max-width: 480px) {
+  .header {
+    padding: 8px 12px;
+    gap: 6px 12px;
+  }
+  .header h1 {
+    font-size: 16px;
+  }
+  .filter-bar {
+    justify-content: flex-end;
+  }
+}
+
+.map-container {
+  flex: 1;
+  position: relative;
+  min-height: 0;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.85);
+  z-index: 1000;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.app.dark .overlay {
+  background: rgba(17, 24, 39, 0.85);
+  color: var(--text-primary);
+}
+
+.overlay.error {
+  color: #c0392b;
+}
+
+.overlay button {
+  padding: 8px 16px;
+  background: #1a1a2e;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+/* Leaflet popup */
+.app.dark .leaflet-popup-content-wrapper,
+.app.dark .leaflet-popup-tip {
+  background: #1a2235;
+  color: var(--text-primary);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+}
+
+.app.dark .leaflet-popup-content-wrapper {
+  border: 1px solid var(--border);
+}
