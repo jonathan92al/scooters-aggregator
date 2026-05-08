@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useMemo, useDeferredValue } from "react";
 import ScooterMap from "./components/ScooterMap";
 import FilterBar from "./components/FilterBar";
+import ErrorPage from "./pages/ErrorPage";
 import "./App.css";
 
 const REFRESH_INTERVAL_MS = 30_000;
@@ -69,6 +70,8 @@ export default function App() {
   );
   const deferredVehicles = useDeferredValue(visibleVehicles);
 
+  if (error && !data) return <ErrorPage onRetry={fetchVehicles} />;
+
   return (
     <div className={`app${mapStyleId === "carto-dark" ? " dark" : ""}`}>
       <header className="header">
@@ -85,9 +88,9 @@ export default function App() {
 
       <main className="map-container">
         {loading && <div className="overlay">Loading scooters...</div>}
-        {error && (
+        {error && data && (
           <div className="overlay error">
-            <span>Failed to load: {error}</span>
+            <span>Failed to refresh</span>
             <button onClick={fetchVehicles}>Retry</button>
           </div>
         )}
