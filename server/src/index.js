@@ -89,6 +89,11 @@ app.post("/api/analytics/click", (req, res) => {
   res.json({ ok: true });
 });
 
+app.post("/api/analytics/entrance", (req, res) => {
+  record({ action: "app_entrance" });
+  res.json({ ok: true });
+});
+
 app.get("/api/analytics", (_req, res) => {
   res.json(summary());
 });

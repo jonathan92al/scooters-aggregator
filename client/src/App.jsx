@@ -51,6 +51,10 @@ export default function App() {
   }, []);
 
   useEffect(() => {
+    fetch(`${API_BASE}/api/analytics/entrance`, { method: "POST" }).catch(() => {});
+  }, []);
+
+  useEffect(() => {
     fetchVehicles();
     const interval = setInterval(fetchVehicles, REFRESH_INTERVAL_MS);
     return () => clearInterval(interval);
